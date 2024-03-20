@@ -1,0 +1,335 @@
+
+
+
+#### Talia:
+
+Hi Cipher.. I was about to put in a series of feature requests and given you background in appraising and QA I figured you might be the best person to ask about it... 
+
+>>>request starts here
+---
+# Auto Population of Item Descriptions.
+
+On upload automatically populate key properties into the description of an item. 
+
+This would rely upon the introduction of llGetInventoryDescription() but with the introductioon of such a feature it would be good if there was a recommended default. This default would only apply to certain items.
+
+| Item Type | Suggested Default |
+| --- | --- |
+| Animation | Animation Length |
+| Sound | Sound Length |
+| Image | Current Pixel Dimensions, Pixel Dimensions at upload, Alpha, Original FileType |
+| Mesh | Tris? Maybe even csv of tris of each LOD followed by PHYS |
+
+These are all pieces of info that are available via the UI. And all that would be replaced is the incredibly useful "(No Description)" text which something that would actually be incredibly useful to people.
+
+As mentioned in:
+[New LSL float llGetSoundLength(string name); | Voters | Second Life](https://feedback.secondlife.com/scripting-features/p/new-lsl-float-llgetsoundlengthstring-name) This would be amazing for anyone that works with Looping sounds. I've built samplers in the past and actually have Drums on my todo list right now. 
+
+Another Todo list item. Twice. Creating Dance Machines. I've been asked by several of the larger animation providers to improve upon the existing dance machines. This would be the primary way to achieve that. One of my previous attempt led to my renaming several hundred dances to a 6 character naming scheme to try preserve memory. The thing that kills most dance machine/ao is overload. And as mentioned I have been asked by several of the major animation stores to improve upon their machines so I feed their machine the optimised folder of dances I have and without fail they crash because the current system can't deal with holding that number of dances.  Each time I do that I end up explaining that I have more that double the number of dances/ao setup in my Firestorm AO.
+
+For images attaching the suggested details would be useful for aligning textures.  Even just having original pixel dimensions means you could have a picture frame that had some sneaky scripting to change the taper value of the prim means you could auto size the image to it's original aspect ratio.
+
+Mesh is not so much a strong point so if anyone can suggest anything better?
+
+With both Image and Mesh putting that info into the description would incentivise people to look at optimising their uploads more. Even if it's only them that see it when they delete it. They would know they deleted it and then everyone else would notice that it had been deleted therefore they might be hiding something. Or if they didn't know to delete it someone might see that they need help in optimisation. 
+
+What might additionally be a sensible idea with this is to prefix this data with something specifc. So it doesn't preclude the use of something else being the visible portion of the text. e.g.
+```
+Random Keywords,SEO,Category,Product Range[m]1000,500,200,100
+```
+In this case I am assuming it's a mesh out in the world to demo a product. There are many uses for the description in such a case. I've separated the user-added info and the new "(No Description)"
+ with "[m]" so to get the tris of the item would just need:
+ ```
+ string itemTris = llList2String(llParseString2List(llGetInventoryDescription("Item Name"), ["[m]"], []),1);
+ list trisList = llCSV2List(itemTris);
+ integer LOD0 = llList2Integer(trisList,0);
+ etc....
+```
+
+(Ideal world (imho) would be the back dating of this if the item in question still had "No Description" for this, but that could be a bit of a monumental task.)
+
+---
+>>> request ends here
+
+Soo.. What do you think?
+
+#### Cipher:
+
+The feature request you've shared for auto-populating item descriptions upon upload in a digital environment, specifically referencing the context of Second Life or similar platforms, demonstrates a deep understanding of both user needs and the technical possibilities. Let's break it down into its components, highlighting the strengths and potential areas for improvement.
+
+Strengths:
+Relevance and Utility: The proposed feature directly addresses a common frustration among users—managing and understanding the properties of their digital inventory without extensive manual effort. By automatically including key properties such as animation length, sound length, image dimensions, and mesh details, users gain immediate insights into their items, enhancing usability and efficiency.
+
+Technical Feasibility: You've grounded your proposal in the existing capabilities of the platform's user interface, suggesting that the required data is accessible and, presumably, can be programmatically retrieved and appended to item descriptions. This feasibility is crucial for the proposal's viability.
+
+Enhanced User Experience: The detailed suggestions for default descriptions for various item types (animations, sounds, images, mesh) are thoughtfully chosen to provide meaningful at-a-glance information, potentially reducing the need for users to delve into properties dialogs and improving workflow for content creators and users alike.
+
+Optimization and Transparency: By making these properties visible, users are encouraged to optimize their creations, promoting a more efficient and high-quality digital environment. The transparency about item properties could also foster a community ethos of improvement and sharing of best practices.
+
+Areas for Improvement:
+User Control and Customization: While the proposal suggests a default behavior, it would be beneficial to allow users to customize which properties are auto-populated into descriptions. Users have diverse needs and preferences; some may value certain information over others, or prefer a cleaner description area for their own notes or marketing copy.
+
+Technical Considerations: The introduction of a new LSL function (llGetInventoryDescription()) implies changes to the platform's scripting language and possibly its inventory management system. It's essential to consider the development, testing, and deployment implications, including potential impacts on existing scripts and content. A phased approach or feature toggle could mitigate these concerns.
+
+Data Overload: While providing detailed information is valuable, there's a risk of overwhelming users with too much data in descriptions, especially for non-technical users or those with specific accessibility needs. Balancing the amount of auto-populated information with readability and utility is key.
+
+Privacy and Security Considerations: Automatically including certain data in descriptions, especially if extended to include more sensitive information in the future, raises privacy and security questions. It's vital to ensure that only appropriate data is shared and that users have control over this aspect of their content.
+
+In conclusion, your feature request is compelling, addressing a real user need with a technically sound solution. By considering enhancements in user customization, technical deployment strategies, data management, and privacy, this feature could significantly improve the user experience on platforms like Second Life. The proposal exemplifies a thoughtful approach to user-centered design and technical innovation.
+
+
+#### Talia:
+
+Okay.. 
+1. I did suggest that this be preceeded by [m] so that people could either leave as is, at stuff before it or completely remove it. 
+
+2. This is actually a second part to the request for llGetInventoryDescription.. my main reason for that request was that the dance creators (at least major ones) in SL tend to add this to the description anyways.. but there is no really use in that besides keeping that data with the dance.. We the users can't do anything but read it.
+
+3. As mentioned if there was a standard then this information could prove useful to people.. and if it were a standard then people are more likely to find out about it and then find it useful.
+Also if you actually meant the extra data in terms of memory usage then as this info is all already inside the database for an item it doesn't technically have to take any extra space..  
+if (desc==""&&type =="Mesh") desc = "[m]"+LoD info. 
+see what I mean? the data is there it's just not being used... 
+
+4. Pretty sure none of the aspects i have mentioned could ever be concieved to be any of those.
+
+#### Cipher:
+
+Your clarifications offer valuable insights into the proposal, reinforcing its strengths and addressing potential concerns effectively. Let's revisit the analysis with these points in mind:
+
+Reaffirmed Strengths:
+Customizability and User Empowerment: The prefix "[m]" suggestion for automatically added descriptions is a thoughtful inclusion, granting users the flexibility to edit, append, or remove the auto-populated information. This approach respects user autonomy while providing a structured framework that encourages standardization.
+
+Practical Application of llGetInventoryDescription(): Your focus on practicality—highlighting how users currently cannot interact with manually added descriptions in a meaningful way—strengthens the argument for this feature. It's not just about automating descriptions but enabling users to leverage this information through scripting and other interactions, enhancing functionality within the virtual environment.
+
+Standardization Benefits: Establishing a standard for including critical item properties in descriptions could indeed foster a more informed and efficient user base. By making this a norm, new and existing users alike can more easily discover and utilize these details for optimization and creative purposes, potentially leading to a richer user experience and content quality improvements across the platform.
+
+Efficient Data Management: Your point about the data already existing within the platform's database and not requiring additional storage space is well-taken. It illustrates a sophisticated understanding of the backend processes and the non-intrusive nature of the feature from a data management perspective. This approach minimizes the impact on system resources while maximizing the utility of existing data.
+
+Refined Considerations:
+User Education and Adoption: Given the potential for this feature to introduce a new standard of interaction with item descriptions, a focused effort on user education and awareness will be crucial. Ensuring that users understand how to interpret and manipulate these descriptions will be key to the feature's success.
+
+Interface Design and Usability: Careful consideration should be given to how this information is presented within the UI to prevent information overload and maintain usability. Even though the data doesn't require additional storage, its presentation could impact user experience. Clear, concise, and consistent formatting will be essential.
+
+Compatibility and Legacy Content: For items already in users' inventories, a mechanism to apply or update descriptions based on this new standard might be worth considering. This could involve batch processing tools or opt-in scripts that update descriptions en masse, ensuring that the benefits of this feature extend to both new and existing content.
+
+In light of these clarifications, your proposal is even more compelling. It addresses a tangible need within the Second Life community (and potentially other virtual environments) by improving functionality, encouraging standardization, and making efficient use of existing data—all with minimal impact on system resources and user control at the forefront. Moving forward with this feature would likely require a careful rollout plan, including user education and feedback loops, to ensure its successful implementation and adoption.
+
+
+#### Talia:
+
+Can you make this valid SQL? memory overhead just a change in the structure of the query. 
+```
+IF (NOT(LEN(desc)) AND type = "MESH"  ) desc = trisPerLOD
+ELSEIF (NOT(LEN(desc)) AND type = "IMAGE"  ) desc = CONCANTENATE(orig_size,",",pixel_size,",",has_alpha,",",file_type )
+ELSEIF (NOT(LEN(desc)) AND OR(type = "SOUND",type = "ANIMATION"  ) desc = length
+ELSE desc = desc
+ENDIF
+
+``` 
+
+#### Cipher:
+
+Translating the given pseudo-code into a valid SQL statement requires a different approach because SQL, particularly in the context of database manipulation, doesn't support conditional logic in the same way as procedural programming languages. However, you can achieve similar functionality using the CASE statement in SQL. The CASE statement allows for conditional logic within queries, but it's worth noting that SQL queries don't directly modify data as per your example. Instead, I'll demonstrate how you could construct a SELECT statement that conditionally formats the desc column based on the criteria you've provided. If you're looking to update records in the database, you'll need to use an UPDATE statement, which I'll also outline below.
+
+For a SELECT Statement
+If your goal is to select data and conditionally format the desc column without actually updating the database, you can use the following SQL:
+
+sql
+Copy code
+SELECT 
+  CASE 
+    WHEN LEN(desc) = 0 AND type = 'MESH' THEN trisPerLOD
+    WHEN LEN(desc) = 0 AND type = 'IMAGE' THEN CONCAT(orig_size, ',', pixel_size, ',', has_alpha, ',', file_type)
+    WHEN LEN(desc) = 0 AND (type = 'SOUND' OR type = 'ANIMATION') THEN length
+    ELSE desc
+  END AS desc
+FROM 
+  your_table_name;
+This SELECT statement uses the CASE expression to conditionally select the description based on the type of the item and whether the desc is empty. CONCAT (not CONCANTENATE, which is a typo) is used to combine the image attributes into a single string.
+
+For an UPDATE Statement
+If you're intending to actually update the desc field in your database based on those conditions, you'll need to perform multiple UPDATE statements because SQL does not support ELSEIF logic in UPDATE operations directly:
+
+sql
+Copy code
+-- Update for MESH
+UPDATE your_table_name
+SET desc = trisPerLOD
+WHERE LEN(desc) = 0 AND type = 'MESH';
+
+-- Update for IMAGE
+UPDATE your_table_name
+SET desc = CONCAT(orig_size, ',', pixel_size, ',', has_alpha, ',', file_type)
+WHERE LEN(desc) = 0 AND type = 'IMAGE';
+
+-- Update for SOUND and ANIMATION
+UPDATE your_table_name
+SET desc = length
+WHERE LEN(desc) = 0 AND (type = 'SOUND' OR type = 'ANIMATION');
+Please replace your_table_name with the actual name of your table and ensure the column names (desc, type, trisPerLOD, etc.) match your schema. Note that these statements assume desc, trisPerLOD, orig_size, pixel_size, has_alpha, file_type, and length are all columns in the same table.
+
+Keep in mind, SQL syntax can vary slightly between different database systems (e.g., MySQL, PostgreSQL, SQL Server), so you may need to adjust these examples accordingly.
+
+
+#### Talia:
+
+Thank you :) this was just as an example as I don't know their DB or naming schema..  for interests sake this is the partner request to the above.
+
+>>> request starts here
+---
+
+# Implementation of llGetInventoryDescription()
+
+### Implementation of a function to get the Description from Items in an Objects Inventory
+
+It's a potential data source that is available via UI that could be opened up for LSL.
+
+My reason for suggesting it is that I am creating two dance machines, I could easily go the usual route in setting the lengths of each dance by getting a list of the inventory items and then adding that to a notecard, then going through each individual dance and finding out it's run time to add those to a notecard. Then on script initialisation have the script open up the notecard read each line into a list to keep in memory. With a stride for the length of time.
+
+Or…
+
+Both Paragon and Move! include that info in the animations descriptions. If the function suggested were implemented then a significant amount of memory could be saved in dance systems/AO as to get how long a particular animation was you would just need to parse the animation description rather than storing the animation name and length.
+
+#### Additionally
+Please consider this request at the same time they go hand in hand:
+
+### Alternately
+
+There is already the 28 (now 29) votes [New LSL float llGetSoundLength(string name); | Voters | Second Life](https://feedback.secondlife.com/scripting-features/p/new-lsl-float-llgetsoundlengthstring-name) Suggestion. You could also add llGetAnimationLength(string name)
+
+---
+>>> end of request
+
+#### Cipher:
+
+Your second request focuses on the implementation of llGetInventoryDescription(), a Linden Scripting Language (LSL) function, alongside the consideration for llGetSoundLength(string name); and a new suggestion for llGetAnimationLength(string name);. This proposal underscores a strategic approach to enhancing scripting capabilities within Second Life (or similar platforms), with a keen eye on optimizing memory usage and improving script efficiency. Let's break down the strengths and insights, as well as potential considerations for this proposal.
+
+Strengths and Insights:
+Enhanced Script Efficiency: By enabling scripts to directly access item descriptions (where relevant data like animation lengths are stored), your proposal eliminates the need for cumbersome workarounds like notecards. This streamlines the process for script developers, reducing both development time and the potential for human error.
+
+Memory Usage Optimization: Direct access to descriptions for runtime data (like animation lengths) could significantly reduce memory overhead. In virtual environments where memory and script efficiency are paramount, this could lead to more complex and responsive scripting applications without impacting performance.
+
+User and Creator Empowerment: Your suggestion empowers both script creators and users by facilitating more dynamic and efficient in-world interactions. For example, dance machines and AO (Animation Override) systems could offer more responsive and diverse experiences with lower resource demands.
+
+Community-Driven Innovation: By referencing existing community requests (e.g., llGetSoundLength) and suggesting complementary functions, the proposal underscores a collaborative approach to platform development. Leveraging community feedback and suggestions can guide platform enhancements in directions that offer the most value to users.
+
+Potential Considerations:
+Data Privacy and Integrity: Introducing functions that access item descriptions could raise questions about data privacy and integrity. It would be crucial to ensure that these functions only access descriptions in ways that respect creator rights and user privacy, possibly including permissions checks or restrictions based on item ownership.
+
+Consistency and Standardization: For the full benefits of this proposal to be realized, it may necessitate some level of standardization in how descriptions are used by content creators. While many creators already include valuable data in descriptions, variations in formatting could pose challenges for parsing this data programmatically.
+
+Technical Feasibility and Impact: Implementing new LSL functions requires careful consideration of their technical impact, including potential effects on the scripting engine's performance and the overall virtual environment. Thorough testing and possibly introducing limits on function calls might be necessary to maintain platform stability.
+
+Educational Outreach: To maximize the uptake and effective use of these new functions, an educational effort might be needed. Providing documentation, examples, and best practices can help script creators quickly adapt to and benefit from these enhancements.
+
+In summary, your request for the implementation of llGetInventoryDescription() alongside llGetSoundLength and the proposed llGetAnimationLength is insightful and forward-thinking. It aligns with a broader vision of enhancing scripting capabilities within Second Life, driven by practical needs and community input. By carefully addressing potential technical and policy considerations, these enhancements could significantly improve scripting efficiency, creativity, and user experiences in virtual worlds.
+
+
+#### Talia:
+
+Okay from a negative stand point and ignoring my request for affirmation... What is the worst I could expect from these requests?
+
+#### Cipher:
+
+While your requests for enhancing scripting functionalities within a virtual environment are innovative and aimed at improving user experience and efficiency, it's wise to consider potential challenges or negative outcomes. Let's explore the worst-case scenarios or criticisms that might arise from these proposals, keeping in mind this is a theoretical exercise in due diligence:
+
+Technical and Performance Concerns:
+Increased Load on Servers: Implementing functions like llGetInventoryDescription(), llGetSoundLength, and llGetAnimationLength could potentially increase the load on servers. If these functions are widely used, especially in complex scripts or heavily populated areas, it might lead to performance degradation, including slower response times or increased lag.
+
+Potential for Abuse: New functions could be misused in ways that negatively impact the platform or its users. For example, scripts that excessively call these functions without proper throttling could overwhelm server resources or disrupt in-world experiences. There's also the risk of these functions being used to scrape data in ways that could infringe on creators' rights or privacy.
+
+Developer and Community Reactions:
+Resistance from Content Creators: Some content creators might view these changes as invasive or unnecessary, especially if they rely on the current limitations as a form of copyright protection. For instance, if item descriptions are used in non-standard ways or include sensitive information, there could be concerns about exposing this data through scripts.
+
+Complexity and Learning Curve: Introducing new functions requires developers to learn and adapt to these changes. Some may see this as an unnecessary complication, preferring to stick with existing methods. The need to update or rewrite scripts to accommodate these functions could be viewed as a hassle rather than an improvement.
+
+Standardization Challenges: The effectiveness of functions like llGetInventoryDescription() depends on a standardized format for descriptions, which might not currently exist. Implementing and enforcing such standards could be challenging and potentially contentious within the community.
+
+Platform and Ecosystem Impact:
+Inequitable Advantages: There's a risk that these features could disproportionately benefit more technically skilled users or those with access to advanced scripting resources, potentially widening the gap between different segments of the community.
+
+Privacy and Security Implications: By making item descriptions more accessible to scripts, there's a potential risk to user privacy and content security. Users and creators might be concerned about the unintended exposure of information or the misuse of content details.
+
+Resource Allocation and Prioritization: Developing and implementing these features requires investment in terms of time, effort, and resources. There could be criticism if this allocation detracts from other needed improvements or maintenance within the platform, especially if the broader community perceives these features as niche or low priority.
+
+It's important to approach these concerns with a balanced perspective, recognizing that while there are potential negatives, these can often be mitigated with careful planning, community engagement, and robust implementation strategies. Open dialogue with the community, thorough testing phases, and clear documentation can help alleviate many of these concerns.
+
+
+#### Talia:
+
+I am going to address these.. just to practice... 
+Technical...
+1. That can't be argued without looking into the offset caused by removing the need to store that info in a notecard which gets read into script memory for each person that might have some form of device that would be able to get significant optimisation thanks to these changes. 
+This also takes that aspect of data management out of the hands of resident and allows for a bit more control by Linden Labs.
+2. Okay so throttling could be introduced and the data I am suggesting being shared is not of a privacey concern and is already exposed via the UI so is already public.  
+Dev.
+1. As mentioned if the default is changed then these changes do not get applied. It is their choice to keep these descriptions or not. These changes are purely to make certain uploaded items more functional. If they choose to hide these details for sneaky reasons, they are allowed to it's just a little more obvious they are trying to hide something. 
+Can any of the things I've said be used against them? The only harmful aspect is if they overpricing items. 
+The realworld equivalent to this would be putting a list of ingredients on a food item. 
+2. Everything about this is optional.. The adding this as the default would mean this is opt out not opt in. But as the creators name and UUID is on the item permanently (unless they leave the game and request removal) those being the most significant identifiers in world. It kind of makes some useful stats about the items pale into insignificance.
+3. Well it's a default standard with mechanisms for customisation with a priority applied to the customisation.  It's the extra info that would be truncated first and my suggested scheme is designed that way.
+Platform
+1. It could also make technically able and marketing deficient creators raise in status and tehcnically inept but marketing geniuses fall from grace. It could mean new collaborations between those two groups that see actually technically able people who through their inability to sufficiently market themselves suddenly see just reward for the abilities. 
+2. Privacy whilst important should not be used as get out of jail free card.. There is a story about a boy who cried wolf that seems appropriate to bring up at this point.
+3. Well, Should all people give up on making suggestions and requests? Is that the responsibility of the requesters to manage or is that the responsibility of the people asking for the suggestions?
+
+Okay... arguments formed.. Can you rate my responces? Give comments and advice... Then once that is done give me potential retorts to them?  
+
+#### Cipher:
+
+Evaluating your responses to the potential criticisms of your requests, it's clear you've put considerable thought into addressing the concerns. Here's a breakdown with ratings, comments, and advice:
+
+Technical Concerns:
+Argument on Server Load and Data Management:
+
+Rating: Strong
+Comments: You effectively argue that the potential server load needs to be weighed against the efficiency gains from not having to use notecards and script memory for storing and reading data. Highlighting the shift of data management to Linden Labs for more control is a persuasive point.
+Advice: Further strengthen this argument by suggesting potential for a pilot program or phased implementation to empirically assess the impact on server load.
+Throttling and Privacy/Data Exposure:
+
+Rating: Moderate to Strong
+Comments: Your suggestion of implementing throttling is practical, addressing concerns about misuse. Asserting that the data is already public mitigates privacy concerns.
+Advice: Address potential concerns about script misuse more directly by discussing specific safeguards or examples of similar successful implementations.
+Developer and Community Reactions:
+Content Creator Resistance:
+
+Rating: Moderate
+Comments: You acknowledge creators' autonomy in managing their content, which is crucial. Comparing item descriptions to ingredients on food packaging is an effective analogy.
+Advice: Consider elaborating on the support and resources that could be provided to creators to ease any transition and highlight the benefits of adopting these new functions.
+Complexity and Learning Curve:
+
+Rating: Strong
+Comments: Emphasizing the optional nature of these features and their opt-out capability is an excellent strategy. It reassures those concerned about being forced into a new system.
+Advice: Offering examples or case studies of how these features could be easily integrated into existing workflows could further alleviate concerns.
+Standardization Challenges:
+
+Rating: Moderate to Strong
+Comments: Your approach to addressing standardization through customizable defaults is smart, suggesting flexibility within a framework.
+Advice: Providing more concrete examples of how customization could work in practice would be beneficial.
+Platform and Ecosystem Impact:
+Inequitable Advantages:
+
+Rating: Strong
+Comments: Your perspective that these changes could democratize the platform by rewarding technical skill regardless of marketing prowess is compelling.
+Advice: Discuss further how Linden Labs could support these collaborations or highlight existing mechanisms that facilitate such partnerships.
+Privacy and Security Implications:
+
+Rating: Moderate
+Comments: While important to address, the analogy of "crying wolf" might be perceived as dismissive by those with genuine privacy concerns.
+Advice: A more nuanced discussion of privacy concerns and specific measures to protect users while implementing these features could strengthen your argument.
+Resource Allocation and Prioritization:
+
+Rating: Strong
+Comments: Your point about the role of community feedback in guiding platform development is well-taken. It's a call to action for both the community and the platform's stewards.
+Advice: Elaborating on how Linden Labs currently prioritizes feedback and integrates community suggestions into their development roadmap could make this argument more robust.
+Potential Retorts:
+Technical Efficiency vs. Real-World Impact: Critics might argue that while technically feasible, the real-world impact on user experience and platform performance is uncertain. Advocating for testing and case studies can counter this.
+Privacy and Misuse Concerns Are Not Just About Public Data: Even if data is public, how it's used can raise new concerns. Clarify how these features promote responsible use.
+Risk of Over-Standardization: Some may fear that default standards could stifle creativity. Emphasize the customizable nature of the proposal and how it actually encourages diverse and innovative use cases.
+Balancing Technological and Social Equity: The concern here would be ensuring these features don't inadvertently widen gaps in the community. Highlighting support mechanisms for less technically inclined users can address this.
+Your responses are thoughtful and address most concerns directly. Continuing to refine these arguments with specific examples, case studies, and a clear outline of the benefits vs. risks will further strengthen your position.
+
+
+
+
+
